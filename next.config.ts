@@ -12,10 +12,6 @@ const nextConfig = {
       { protocol: 'https', hostname: 'cdn.jsdelivr.net' },
     ],
   },
-  eslint: {
-    // Ne bloque PAS le build en cas d'erreurs eslint
-    ignoreDuringBuilds: true,
-  },
 };
 
 module.exports = nextConfig;
