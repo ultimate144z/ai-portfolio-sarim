@@ -71,21 +71,44 @@ const MOTION_CONFIG = {
   exit: { opacity: 0, y: 20 },
   transition: {
     duration: 0.3,
-    ease: 'easeOut',
+    ease: 'easeOut' as const,
   },
 };
+
+const MAX_MESSAGES_PER_DAY = 3;
 
 const Chat = () => {
   const searchParams = useSearchParams();
   const initialQuery = searchParams.get('query');
   const [autoSubmitted, setAutoSubmitted] = useState(false);
   const [loadingSubmit, setLoadingSubmit] = useState(false);
+  const [messagesCount, setMessagesCount] = useState(0);
   const [presetReply, setPresetReply] = useState<{
     question: string;
     reply: string;
     tool: string;
   } | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  useEffect(() => {
+    const savedCount = localStorage.getItem('sarim_portfolio_msg_count');
+    const resetDate = localStorage.getItem('sarim_portfolio_reset_date');
+    const today = new Date().toDateString();
+
+    if (resetDate !== today) {
+      localStorage.setItem('sarim_portfolio_msg_count', '0');
+      localStorage.setItem('sarim_portfolio_reset_date', today);
+      setMessagesCount(0);
+    } else if (savedCount) {
+      setMessagesCount(parseInt(savedCount, 10));
+    }
+  }, []);
+
+  const incrementMessageCount = () => {
+    const newCount = messagesCount + 1;
+    setMessagesCount(newCount);
+    localStorage.setItem('sarim_portfolio_msg_count', newCount.toString());
+  };
 
   const {
     messages,
@@ -115,12 +138,12 @@ const Chat = () => {
       // Handle specific error types
       if (error.message?.includes('quota') || error.message?.includes('exceeded') || error.message?.includes('429')) {
         // Show a friendly notification for quota issues
-        toast.error('⚠️ API Quota Exhausted! Free Gemini API limit reached. Please contact Anuj directly or use preset questions. Thank you for understanding! 🙏', {
-          duration: 6000, // Show for 6 seconds
+        toast.error('⚠️ API Limit Reached. Please contact Sarim directly or use the preset questions below.', {
+          duration: 6000,
           style: {
-            background: '#fef3c7',
-            border: '1px solid #f59e0b',
-            color: '#92400e',
+            background: '#10131f',
+            border: '1px solid rgba(255,255,255,0.1)',
+            color: '#ffffff',
             fontSize: '14px',
             fontWeight: '500',
           },
@@ -133,7 +156,7 @@ const Chat = () => {
         try {
           append({
             role: 'assistant',
-            content: '⚠️ **API Quota Exhausted**\n\nFree Gemini API limit reached. Please contact Anuj directly or use preset questions below.',
+            content: '⚠️ **API Limit Reached**\n\nThe AI provider limit has been reached. Please contact Sarim directly or use the preset questions below.',
           });
         } catch (appendError) {
           console.error('Failed to append error message:', appendError);
@@ -198,10 +221,8 @@ const Chat = () => {
   const submitQuery = (query) => {
     if (!query.trim() || isToolInProgress) return;
     
-    // Clear any previous error message
     setErrorMessage(null);
     
-    // Check if this is a preset question first
     if (presetReplies[query]) {
       const preset = presetReplies[query];
       setPresetReply({ question: query, reply: preset.reply, tool: preset.tool });
@@ -209,6 +230,13 @@ const Chat = () => {
       return;
     }
     
+    // Regular text submission, trigger limit
+    if (messagesCount >= MAX_MESSAGES_PER_DAY) {
+      setErrorMessage("You've reached the demo limit for today. To continue the conversation, reach out directly at sarimfarooq1212@gmail.com — or come back tomorrow!");
+      return;
+    }
+    
+    incrementMessageCount();
     setLoadingSubmit(true);
     setPresetReply(null); // Clear any preset reply when submitting new query
     append({
@@ -221,10 +249,14 @@ const Chat = () => {
   const submitQueryToAI = (query) => {
     if (!query.trim() || isToolInProgress) return;
     
-    // Clear any previous error message
     setErrorMessage(null);
     
-    // Force AI response, bypass preset checking
+    if (messagesCount >= MAX_MESSAGES_PER_DAY) {
+      setErrorMessage("You've reached the demo limit for today. To continue the conversation, reach out directly at sarimfarooq1212@gmail.com — or come back tomorrow!");
+      return;
+    }
+
+    incrementMessageCount();
     setLoadingSubmit(true);
     setPresetReply(null);
     append({
@@ -280,17 +312,25 @@ const Chat = () => {
         className="fixed top-0 right-0 left-0 z-50"
         style={{
           background:
-            'linear-gradient(to bottom, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.95) 30%, rgba(255, 255, 255, 0.8) 50%, rgba(255, 255, 255, 0) 100%)',
+            'linear-gradient(to bottom, rgba(8, 11, 20, 1) 0%, rgba(8, 11, 20, 0.95) 30%, rgba(8, 11, 20, 0.8) 50%, rgba(8, 11, 20, 0) 100%)',
         }}
       >
         <div
           className={`transition-all duration-300 ease-in-out ${hasActiveTool ? 'pt-6 pb-0' : 'py-6'}`}
         >
-          <div className="flex justify-center">
+          <div className="flex justify-center flex-col items-center">
             <ClientOnly>
-              <Avatar
-                hasActiveTool={hasActiveTool}
-              />
+              <div className="relative mb-2">
+                <Avatar
+                  hasActiveTool={hasActiveTool}
+                />
+                {!hasActiveTool && (
+                  <div className="absolute -bottom-2 -right-16 bg-[#10131f]/80 backdrop-blur-md border border-white/10 px-3 py-1.5 rounded-full flex items-center gap-2 shadow-lg">
+                    <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+                    <span className="text-[10px] font-medium text-white tracking-wider whitespace-nowrap">AVAILABLE FOR HIRE</span>
+                  </div>
+                )}
+              </div>
             </ClientOnly>
           </div>
 
@@ -352,34 +392,28 @@ const Chat = () => {
                 className="px-4 pt-4"
               >
                 <ChatBubble variant="received">
-                  <ChatBubbleMessage className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800">
-                    <div className="space-y-4 p-4">
+                  <ChatBubbleMessage className="bg-[#10131f] border border-white/10 shadow-xl">
+                    <div className="space-y-4 p-4 text-white">
                       <div className="flex items-center gap-3 mb-3">
-                        <div className="h-10 w-10 rounded-full bg-amber-500 flex items-center justify-center">
-                          <span className="text-white text-lg">⚠️</span>
+                        <div className="h-10 w-10 rounded-full bg-primary/20 border border-primary/30 flex items-center justify-center">
+                          <span className="text-primary text-lg">⚠️</span>
                         </div>
                         <div>
-                          <h3 className="font-semibold text-amber-800 dark:text-amber-300 text-sm">
-                            API Quota Exhausted
+                          <h3 className="font-semibold text-white text-md">
+                            Limit Reached
                           </h3>
-                          <p className="text-xs text-amber-600 dark:text-amber-400">
-                            Free Gemini API limit reached
-                          </p>
                         </div>
                       </div>
                       
-                      <div className="text-sm text-amber-800 dark:text-amber-200 space-y-2">
-                        <p>
-                          Hi! I'm currently using the <strong>free version</strong> of Google's Gemini API, 
-                          and today's quota has been reached.
-                        </p>
+                      <div className="text-sm text-slate-300 space-y-2">
+                        <p>{errorMessage}</p>
                         
-                        <div className="bg-amber-100 dark:bg-amber-900/30 p-3 rounded-lg mt-3">
-                          <p className="font-medium mb-2">What you can do:</p>
-                          <ul className="list-disc list-inside space-y-1 text-xs">
-                            <li>Contact me directly for a live demo</li>
+                        <div className="bg-white/5 border border-white/10 p-3 rounded-lg mt-3">
+                          <p className="font-medium mb-2 text-white">Alternative options:</p>
+                          <ul className="list-disc list-inside space-y-1 text-xs text-slate-400">
+                            <li>Email me at <a href="mailto:sarimfarooq1212@gmail.com" className="text-primary hover:underline">sarimfarooq1212@gmail.com</a></li>
                             <li>Use the preset questions below for instant responses</li>
-                            <li>Come back tomorrow when the quota resets</li>
+                            <li>Visit my LinkedIn or GitHub</li>
                           </ul>
                         </div>
                       </div>
@@ -445,8 +479,15 @@ const Chat = () => {
         </div>
 
         {/* Fixed Bottom Bar */}
-        <div className="sticky bottom-0 bg-white px-2 pt-3 md:px-0 md:pb-4">
-          <div className="relative flex flex-col items-center gap-3">
+        <div className="sticky bottom-0 bg-transparent px-2 pt-3 md:px-0 md:pb-4">
+          <div className="absolute inset-0 bg-gradient-to-t from-[#080b14] via-[#080b14] to-transparent pointer-events-none" />
+          <div className="relative flex flex-col items-center gap-2">
+            
+            <div className="flex justify-between w-full max-w-3xl px-4 text-xs font-semibold uppercase tracking-wider text-slate-400/80 mb-1 pointer-events-none">
+               <span>AI ASSISTANT</span>
+               <span>{MAX_MESSAGES_PER_DAY - messagesCount} {MAX_MESSAGES_PER_DAY - messagesCount === 1 ? 'MESSAGE' : 'MESSAGES'} REMAINING</span>
+            </div>
+
             <HelperBoost 
               submitQuery={submitQuery} 
               setInput={setInput} 

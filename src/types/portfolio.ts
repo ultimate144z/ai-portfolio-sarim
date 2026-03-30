@@ -1,3 +1,4 @@
+import React from 'react';
 export interface PersonalInfo {
   name: string;
   age: number;
@@ -31,13 +32,10 @@ export interface Experience {
 }
 
 export interface Skills {
-  programming: string[];
+  languages: string[];
   ml_ai: string[];
-  web_development: string[];
-  databases: string[];
+  llms_apis: string[];
   devops_cloud: string[];
-  iot_hardware: string[];
-  soft_skills: string[];
 }
 
 export interface ProjectLink {
@@ -119,6 +117,13 @@ export interface PresetQuestions {
   fun: string[];
 }
 
+export interface Certification {
+  name: string;
+  issuer: string;
+  grade: string;
+  year: string;
+}
+
 export interface Meta {
   configVersion: string;
   lastUpdated: string;
@@ -131,6 +136,7 @@ export interface PortfolioConfig {
   education: Education;
   experience: Experience[];
   skills: Skills;
+  certifications?: Certification[];
   projects: Project[];
   social: Social;
   internship: Internship;

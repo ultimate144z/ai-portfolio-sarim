@@ -1,51 +1,45 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
-import { ArrowDownToLine, Download, Eye, File, ExternalLink } from 'lucide-react';
-import Image from 'next/image';
+import { Download, File, ExternalLink } from 'lucide-react';
 import { resumeDetails } from '@/lib/config-loader';
 
 export function Resume() {
-  // Resume details loaded from configuration
-
   const handleDownload = () => {
-    // For external URLs, open in a new tab
     window.open(resumeDetails.downloadUrl, '_blank');
   };
 
   return (
-    <div className="mx-auto w-full py-8 font-sans">
+    <div className="mx-auto w-full py-6 font-sans">
       {/* Resume Card */}
       <motion.div
-        className="group relative overflow-hidden rounded-xl bg-accent p-0 transition-all duration-300 mb-4"
-        initial={{ opacity: 0, y: 20 }}
+        className="group relative mb-4 overflow-hidden rounded-xl border border-white/10 bg-[#10131f] transition-all duration-300 hover:border-primary/30"
+        initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.0, ease: 'easeOut' }}
+        transition={{ duration: 0.3 }}
       >
-        {/* Details area */}
         <div className="p-5">
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="text-lg font-medium text-foreground">
+              <h3 className="text-base font-semibold text-white">
                 {resumeDetails.title}
               </h3>
-              <p className="text-sm text-muted-foreground">
+              <p className="mt-0.5 text-sm text-slate-400">
                 {resumeDetails.description}
               </p>
-              <div className="mt-1 flex text-xs text-muted-foreground">
-                <span>{resumeDetails.fileType}</span>
-                <span className="mx-2">•</span>
+              <div className="mt-1.5 flex items-center gap-2 text-xs text-slate-500">
+                <span className="rounded-sm bg-white/8 px-1.5 py-0.5 font-medium text-slate-400">
+                  {resumeDetails.fileType}
+                </span>
                 <span>Updated {resumeDetails.lastUpdated}</span>
-                <span className="mx-2">•</span>
+                <span>·</span>
                 <span>{resumeDetails.fileSize}</span>
               </div>
             </div>
-
-            {/* Download button */}
             <motion.button
               onClick={handleDownload}
-              className="flex h-10 w-10 items-center justify-center rounded-full bg-black text-white hover:bg-black/80 transition-colors"
+              className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-white transition-colors hover:bg-primary/80"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               title="Download PDF"
@@ -56,28 +50,27 @@ export function Resume() {
         </div>
       </motion.div>
 
-      {/* PDF Preview - Always Visible */}
+      {/* PDF Preview */}
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4, delay: 0.2 }}
-        className="w-full rounded-xl overflow-hidden border bg-white shadow-lg"
+        transition={{ duration: 0.4, delay: 0.15 }}
+        className="w-full overflow-hidden rounded-xl border border-white/10"
       >
-        <div className="bg-gray-100 px-4 py-2 flex items-center justify-between border-b">
+        <div className="flex items-center justify-between border-b border-white/10 bg-[#10131f] px-4 py-2.5">
           <div className="flex items-center gap-2">
-            <File className="h-4 w-4 text-gray-600" />
-            <span className="text-sm font-medium text-gray-700">Resume Preview</span>
+            <File className="h-4 w-4 text-slate-400" />
+            <span className="text-sm font-medium text-slate-300">Resume Preview</span>
           </div>
           <button
             onClick={handleDownload}
-            className="flex items-center gap-1 px-3 py-1 text-xs bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+            className="flex items-center gap-1.5 rounded-md border border-white/10 bg-white/5 px-3 py-1 text-xs text-slate-300 transition-colors hover:bg-white/10"
           >
             <ExternalLink className="h-3 w-3" />
             Open Full
           </button>
         </div>
-        
-        <div className="w-full h-[600px] bg-gray-50">
+        <div className="w-full h-[600px] bg-[#0d0f1a]">
           <iframe
             src={resumeDetails.downloadUrl}
             width="100%"

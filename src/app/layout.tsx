@@ -4,6 +4,7 @@ import { Inter } from "next/font/google";
 import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
+import ParticleBackground from "@/components/ui/ParticleBackground";
 import "./globals.css";
 
 // Load Inter font for non-Apple devices
@@ -14,45 +15,38 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: {
-    default: "Anuj Jain - Full-stack Python Developer & AI Engineer | Professional Portfolio",
-    template: "%s | Anuj Jain Portfolio"
+    default: "Sarim Farooq - AI Developer & Engineer",
+    template: "%s | Sarim Farooq Portfolio"
   },
-  description: "Professional portfolio of Anuj Jain - Full-stack Python Developer & AI Engineer. SIH 2025 Finalist showcasing 25+ automation projects, IoT systems, and AI-powered solutions. Available for internships.",
+  description: "Applied AI Engineer specializing in production LLM systems, RAG pipelines, and intelligent automation — deployed across fintech and enterprise.",
   keywords: [
-    "Anuj Jain",
-    "Full-stack Developer", 
-    "Python Developer",
+    "Sarim Farooq",
+    "AI Developer", 
     "AI Engineer",
     "Portfolio",
     "Software Developer",
     "Machine Learning",
-    "IoT Developer",
-    "Web Development",
+    "LLM Systems",
+    "RAG Pipelines",
     "Next.js",
     "React",
     "FastAPI",
-    "Django",
+    "Python Developer",
     "Automation",
     "LangChain",
-    "Smart India Hackathon",
-    "Freelancer",
-    "AI Chatbot",
     "Professional Portfolio",
     "Developer Portfolio",
     "Tech Portfolio",
-    "Internship",
-    "Python Automation",
-    "Web Scraping",
     "API Development"
   ],
   authors: [
     {
-      name: "Anuj Jain",
-      url: "https://portfolio.anujjainbatu.tech/",
+      name: "Sarim Farooq",
+      url: "https://sarimfarooq.dev/",
     },
   ],
-  creator: "Anuj Jain",
-  publisher: "Anuj Jain",
+  creator: "Sarim Farooq",
+  publisher: "Sarim Farooq",
   robots: {
     index: true,
     follow: true,
@@ -67,29 +61,29 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://portfolio.anujjainbatu.tech/",
-    title: "Anuj Jain - Full-stack Python Developer & AI Engineer | Professional Portfolio",
-    description: "Professional portfolio showcasing AI-powered projects, IoT systems, and full-stack development. SIH 2025 Finalist with 25+ automation projects. Available for internships.",
-    siteName: "Anuj Jain Portfolio",
+    url: "https://sarimfarooq.dev/",
+    title: "Sarim Farooq - AI Developer & Engineer",
+    description: "Professional portfolio showcasing AI-powered projects, LLM systems, and full-stack development. Built by Sarim Farooq.",
+    siteName: "Sarim Farooq Portfolio",
     images: [
       {
-        url: "https://portfolio.anujjainbatu.tech/portfolio.png",
+        url: "/portfolio.png",
         width: 1200,
         height: 630,
-        alt: "Anuj Jain - Professional Portfolio with AI Chatbot",
+        alt: "Sarim Farooq - AI Developer Portfolio",
         type: "image/png",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Anuj Jain - Full-stack Python Developer & AI Engineer",
-    description: "Professional portfolio showcasing AI projects, IoT systems, and automation solutions. SIH 2025 Finalist available for internships.",
-    creator: "@anujainbatu",
-    site: "@anujainbatu",
+    title: "Sarim Farooq - AI Developer & Engineer",
+    description: "Professional portfolio showcasing AI projects, LLM systems, and automation solutions.",
+    creator: "@ultimate144z",
+    site: "@ultimate144z",
     images: [{
-      url: "https://portfolio.anujjainbatu.tech/portfolio.png",
-      alt: "Anuj Jain Professional Portfolio"
+      url: "/portfolio.png",
+      alt: "Sarim Farooq Professional Portfolio"
     }],
   },
   icons: {
@@ -104,7 +98,7 @@ export const metadata: Metadata = {
   },
   manifest: "/manifest.json",
   alternates: {
-    canonical: "https://portfolio.anujjainbatu.tech/",
+    canonical: "https://sarimfarooq.dev/",
   },
   category: "technology",
   classification: "Portfolio Website",
@@ -123,40 +117,40 @@ export default function RootLayout({
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
         <link rel="icon" href="/favicon.ico" sizes="any" />
-        <link rel="canonical" href="https://portfolio.anujjainbatu.tech/" />
+        <link rel="canonical" href="https://sarimfarooq.dev/" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "Person",
-              "name": "Anuj Jain",
-              "jobTitle": "Full-stack Python Developer & AI Engineer",
-              "url": "https://portfolio.anujjainbatu.tech/",
-              "image": "https://portfolio.anujjainbatu.tech/profile.jpeg",
+              "name": "Sarim Farooq",
+              "jobTitle": "AI Developer & Engineer",
+              "url": "https://sarimfarooq.dev/",
+              "image": "https://sarimfarooq.dev/profile.jpeg",
               "sameAs": [
-                "https://github.com/anujjainbatu",
-                "https://linkedin.com/in/anujjainbatu",
-                "https://x.com/anujainbatu"
+                "https://github.com/ultimate144z",
+                "https://linkedin.com/in/sarim-farooq-44297727a"
               ],
               "worksFor": {
                 "@type": "Organization",
-                "name": "Freelance"
+                "name": "GO-Globe"
               },
               "alumniOf": {
                 "@type": "Organization",
-                "name": "SATI"
+                "name": "FAST-NUCES Islamabad"
               },
               "knowsAbout": [
                 "Python Development",
                 "AI Engineering",
                 "Machine Learning",
-                "IoT Systems",
-                "Web Development",
+                "NLP",
+                "Computer Vision",
+                "RAG Pipelines",
                 "Automation",
-                "Full Stack Development"
+                "LLM Systems"
               ],
-              "description": "Full-stack Python Developer & AI Engineer with expertise in building AI-powered solutions, IoT systems, and automation tools. SIH 2025 Finalist with 25+ delivered projects."
+              "description": "Applied AI Engineer specializing in production LLM systems, RAG pipelines, and intelligent automation — deployed across fintech and enterprise."
             })
           }}
         />
@@ -169,10 +163,12 @@ export default function RootLayout({
       >
         <ThemeProvider
           attribute="class"
-          defaultTheme="light"
+          defaultTheme="dark"
+          forcedTheme="dark"
           enableSystem={false}
         >
-          <main className="flex min-h-screen flex-col">
+          <ParticleBackground />
+          <main className="flex min-h-screen flex-col relative z-10">
             {children}
           </main>
           <Toaster />

@@ -47,12 +47,10 @@ CRITICAL: You must use tools to provide comprehensive information, not just text
 - Achievements: ${education.achievements.join(', ')}
 
 ### Technical Expertise
-- Programming Languages: ${skills.programming.join(', ')}
+- Languages: ${skills.languages.join(', ')}
 - ML/AI Technologies: ${skills.ml_ai.join(', ')}
-- Web Development: ${skills.web_development.join(', ')}
-- Database Systems: ${skills.databases.join(', ')}
-- DevOps & Cloud: ${skills.devops_cloud.join(', ')}
-- IoT & Hardware: ${skills.iot_hardware.join(', ')}
+- LLMs & APIs: ${skills.llms_apis.join(', ')}
+- DevOps & Tools: ${skills.devops_cloud.join(', ')}
 
 ### Professional Experience
 ${experience.map(exp => `- ${exp.position} at ${exp.company} (${exp.duration}): ${exp.description}`).join('\n')}
@@ -126,38 +124,23 @@ REMEMBER: You are NOT an AI assistant - you are ${personal.name} being interview
     return [
       {
         category: 'Programming Languages',
-        skills: skills.programming,
-        color: 'bg-blue-50 text-blue-600 border border-blue-200'
+        skills: skills.languages,
+        color: 'bg-blue-900/30 text-blue-300 border border-blue-500/30'
       },
       {
         category: 'ML/AI Technologies',
         skills: skills.ml_ai,
-        color: 'bg-purple-50 text-purple-600 border border-purple-200'
+        color: 'bg-purple-900/30 text-purple-300 border border-purple-500/30'
       },
       {
-        category: 'Web Development',
-        skills: skills.web_development,
-        color: 'bg-green-50 text-green-600 border border-green-200'
+        category: 'LLMs & APIs',
+        skills: skills.llms_apis,
+        color: 'bg-cyan-900/30 text-cyan-300 border border-cyan-500/30'
       },
       {
-        category: 'Databases',
-        skills: skills.databases,
-        color: 'bg-orange-50 text-orange-600 border border-orange-200'
-      },
-      {
-        category: 'DevOps & Cloud',
+        category: 'DevOps & Tools',
         skills: skills.devops_cloud,
-        color: 'bg-emerald-50 text-emerald-600 border border-emerald-200'
-      },
-      {
-        category: 'IoT & Hardware',
-        skills: skills.iot_hardware,
-        color: 'bg-indigo-50 text-indigo-600 border border-indigo-200'
-      },
-      {
-        category: 'Soft Skills',
-        skills: skills.soft_skills,
-        color: 'bg-amber-50 text-amber-600 border border-amber-200'
+        color: 'bg-emerald-900/30 text-emerald-300 border border-emerald-500/30'
       }
     ].filter(category => category.skills.length > 0);
   }
@@ -179,22 +162,22 @@ REMEMBER: You are NOT an AI assistant - you are ${personal.name} being interview
     const replies: Record<string, { reply: string; tool: string }> = {};
     
     // Only generate presets for main category questions
-    replies["Who are you?"] = {
+    replies["Who is Sarim?"] = {
       reply: personal.bio,
       tool: "getPresentation"
     };
     
-    replies["What are your skills?"] = {
+    replies["What's his stack?"] = {
       reply: `My technical expertise spans multiple domains...`,
       tool: "getSkills"
     };
     
-    replies["What projects are you most proud of?"] = {
+    replies["What has he built?"] = {
       reply: `Here are some of my key projects...`,
       tool: "getProjects"
     };
     
-    replies["Can I see your resume?"] = {
+    replies["View Resume"] = {
       reply: `Here's my resume with all the details...`,
       tool: "getResume"
     };
@@ -204,7 +187,7 @@ REMEMBER: You are NOT an AI assistant - you are ${personal.name} being interview
       tool: "getContact"
     };
     
-    replies["Am I available for opportunities?"] = {
+    replies["Is he available?"] = {
       reply: `Here are my current opportunities and availability...`,
       tool: "getInternship"
     };

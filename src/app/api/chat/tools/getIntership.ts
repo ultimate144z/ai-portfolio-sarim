@@ -26,15 +26,13 @@ export const getInternship = tool({
       },
       skills: {
         technical: [
-          ...config.skills.programming,
+          ...config.skills.languages,
           ...config.skills.ml_ai,
-          ...config.skills.web_development,
-          ...config.skills.databases,
+          ...config.skills.llms_apis,
           ...config.skills.devops_cloud,
-          ...config.skills.iot_hardware
         ],
         soft: [
-          "Team Leadership", "Project Management", "Problem Solving", 
+          "Team Leadership", "Project Management", "Problem Solving",
           "Communication", "Adaptability", "Innovation"
         ]
       },

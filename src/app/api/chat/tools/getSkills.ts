@@ -11,12 +11,10 @@ export const getSkills = tool({
     
     return {
       technicalSkills: {
-        programming: config.skills.programming,
+        languages: config.skills.languages,
         machineLearning: config.skills.ml_ai,
-        webDevelopment: config.skills.web_development,
-        databases: config.skills.databases,
+        llmsAndApis: config.skills.llms_apis,
         devOpsCloud: config.skills.devops_cloud,
-        iotHardware: config.skills.iot_hardware
       },
       education: {
         degree: config.education.current.degree,

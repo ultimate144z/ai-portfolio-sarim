@@ -38,29 +38,28 @@ interface HelperBoostProps {
 }
 
 const questions = {
-  Me: 'Who are you? I want to know more about you.',
-  Projects: 'What are your projects? What are you working on right now?',
-  Skills: 'What are your skills? Give me a list of your soft and hard skills.',
-  Resume: 'Can I see your resume?',
-  Contact:
-    'How can I reach you? What kind of project would make you say "yes" immediately?',
+  Me: 'Who is Sarim?',
+  Projects: 'What has he built?',
+  Skills: "What's his stack?",
+  Availability: 'Is he available?',
+  Resume: 'View Resume',
 };
 
 const questionConfig = [
-  { key: 'Me', color: '#329696', icon: Laugh },
-  { key: 'Projects', color: '#3E9858', icon: BriefcaseBusiness },
+  { key: 'Me', color: '#6C63FF', icon: UserSearch },
+  { key: 'Projects', color: '#00D4FF', icon: CodeIcon },
   { key: 'Skills', color: '#856ED9', icon: Layers },
+  { key: 'Availability', color: '#3E9858', icon: Laugh },
   { key: 'Resume', color: '#D97856', icon: FileText },
-  { key: 'Contact', color: '#C19433', icon: UserRoundSearch },
 ];
 
 // Helper drawer data
 const specialQuestions = [
-  'Who are you?',
-  'Can I see your resume?',
-  'What projects are you most proud of?',
-  'What are your skills?',
-  'How can I reach you?',
+  'Who is Sarim?',
+  'What has he built?',
+  "What's his stack?",
+  'Is he available?',
+  'View Resume',
 ];
 
 const questionsByCategory = [
@@ -148,11 +147,11 @@ export default function HelperBoost({
     
     // Map question keys to preset replies that match our config exactly
     const presetMapping: { [key: string]: string } = {
-      'Me': 'Who are you?',
-      'Projects': 'What projects are you most proud of?',
-      'Skills': 'What are your skills?',
-      'Resume': 'Can I see your resume?',
-      'Contact': 'How can I reach you?'
+      'Me': 'Who is Sarim?',
+      'Projects': 'What has he built?',
+      'Skills': "What's his stack?",
+      'Availability': 'Is he available?',
+      'Resume': 'View Resume'
     };
     
     const presetKey = presetMapping[questionKey];
@@ -225,11 +224,11 @@ export default function HelperBoost({
                     key={key}
                     onClick={() => handleQuestionClick(key)}
                     variant="outline"
-                    className="border-border hover:bg-border/30 h-auto min-w-[100px] flex-shrink-0 cursor-pointer rounded-xl border bg-white/80 px-4 py-3 shadow-none backdrop-blur-sm transition-none active:scale-95"
+                    className="border-white/10 hover:bg-white/10 h-auto min-w-[100px] flex-shrink-0 cursor-pointer rounded-full border bg-[#10131f]/60 px-4 py-3 shadow-none backdrop-blur-md transition-all duration-200 active:scale-95"
                   >
-                    <div className="flex items-center gap-3 text-gray-700">
+                    <div className="flex items-center gap-3 text-white">
                       <Icon size={18} strokeWidth={2} color={color} />
-                      <span className="text-sm font-medium">{key}</span>
+                      <span className="text-sm font-medium hover:text-white group-hover:text-white transition-colors">{key}</span>
                     </div>
                   </Button>
                 ))}
@@ -240,17 +239,15 @@ export default function HelperBoost({
                     <TooltipTrigger asChild>
                       <Drawer.Trigger className="group relative flex flex-shrink-0 items-center justify-center">
                         <motion.div
-                          className="hover:bg-border/30 flex h-auto cursor-pointer items-center space-x-1 rounded-xl border border-neutral-200 bg-white/80 px-4 py-3 text-sm backdrop-blur-sm transition-all duration-200 dark:border-neutral-800 dark:bg-neutral-900"
+                          className="hover:bg-white/10 flex h-auto cursor-pointer items-center space-x-1 rounded-full border border-white/10 bg-[#10131f]/60 px-4 py-3 text-sm backdrop-blur-md transition-all duration-200"
                           whileHover={{ scale: 1 }}
                           whileTap={{ scale: 0.98 }}
                         >
-                          <div className="flex items-center gap-3 text-gray-700">
+                          <div className="flex items-center gap-3 text-white">
                             <CircleEllipsis
                               className="h-[20px] w-[18px]"
-                              //style={{ color: '#3B82F6' }}
                               strokeWidth={2}
                             />
-                            {/*<span className="text-sm font-medium">More</span>*/}
                           </div>
                         </motion.div>
                       </Drawer.Trigger>
@@ -267,13 +264,13 @@ export default function HelperBoost({
 
         {/* Drawer Content */}
         <Drawer.Portal>
-          <Drawer.Overlay className="fixed inset-0 z-100 bg-black/60 backdrop-blur-xs" />
-          <Drawer.Content className="fixed right-0 bottom-0 left-0 z-100 mt-24 flex h-[80%] flex-col rounded-t-[10px] bg-gray-100 outline-none lg:h-[60%]">
-            <div className="flex-1 overflow-y-auto rounded-t-[10px] bg-white p-4">
+          <Drawer.Overlay className="fixed inset-0 z-100 bg-black/60 backdrop-blur-sm" />
+          <Drawer.Content className="fixed right-0 bottom-0 left-0 z-100 mt-24 flex h-[80%] flex-col rounded-t-[20px] bg-[#10131f] border-t border-white/10 outline-none lg:h-[60%]">
+            <div className="flex-1 overflow-y-auto rounded-t-[20px] bg-[#10131f] p-4 text-white custom-scrollbar">
               <div className="mx-auto max-w-md space-y-4">
                 <div
                   aria-hidden
-                  className="mx-auto mb-8 h-1.5 w-12 flex-shrink-0 rounded-full bg-gray-300"
+                  className="mx-auto mb-8 h-1.5 w-12 flex-shrink-0 rounded-full bg-white/20"
                 />
                 <div className="mx-auto w-full max-w-md">
                   <div className="space-y-8 pb-16">
@@ -313,14 +310,14 @@ function CategorySection({
 }: CategorySectionProps) {
   return (
     <div className="space-y-3">
-      <div className="flex items-center gap-2.5 px-1">
+      <div className="flex items-center gap-2.5 px-1 text-white">
         <Icon className="h-5 w-5" />
-        <Drawer.Title className="text-[22px] font-medium text-gray-900">
+        <Drawer.Title className="text-[22px] font-medium text-white">
           {name}
         </Drawer.Title>
       </div>
 
-      <Separator className="my-4" />
+      <Separator className="my-4 bg-white/10" />
 
       <div className="space-y-3">
         {questions.map((question, index) => (
@@ -349,26 +346,22 @@ function QuestionItem({ question, onClick, isSpecial }: QuestionItemProps) {
   return (
     <motion.button
       className={cn(
-        'flex w-full items-center justify-between rounded-[10px]',
+        'flex w-full items-center justify-between rounded-full border border-white/5',
         'text-md px-6 py-4 text-left font-normal',
         'transition-all',
-        'focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500',
-        isSpecial ? 'bg-black' : 'bg-[#F7F8F9]'
+        'focus:outline-none focus-visible:ring-2 focus-visible:ring-primary',
+        isSpecial ? 'bg-primary/20 hover:bg-primary/30' : 'bg-[#1a1e30] hover:bg-[#1a1e30]/80'
       )}
       onClick={onClick}
       onHoverStart={() => setIsHovered(true)}
       onHoverEnd={() => setIsHovered(false)}
-      whileHover={{
-        backgroundColor: isSpecial ? undefined : '#F0F0F2',
-      }}
       whileTap={{
         scale: 0.98,
-        backgroundColor: isSpecial ? undefined : '#E8E8EA',
       }}
     >
       <div className="flex items-center">
-        {isSpecial && <Sparkles className="mr-2 h-4 w-4 text-white" />}
-        <span className={isSpecial ? 'font-medium text-white' : ''}>
+        {isSpecial && <Sparkles className="mr-2 h-4 w-4 text-primary" />}
+        <span className={isSpecial ? 'font-medium text-white' : 'text-slate-300'}>
           {question}
         </span>
       </div>

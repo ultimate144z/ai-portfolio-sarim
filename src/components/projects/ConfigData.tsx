@@ -1,89 +1,64 @@
-import Image from 'next/image';
-import { Image as Img } from 'lucide-react';
-import { ChevronRight, Link } from 'lucide-react';
-import { Separator } from '@/components/ui/separator';
+import { Github, ExternalLink } from 'lucide-react';
 import { projectData, getConfig } from '@/lib/config-loader';
 
-// Get project content from configuration
 const config = getConfig();
 const PROJECT_CONTENT = config.projects;
 
-// ProjectContent component - now uses config data
+// Gradient palettes per project index for visual variety
+const CARD_GRADIENTS = [
+  'from-violet-900/80 via-purple-900/60 to-[#10131f]',
+  'from-cyan-900/80 via-blue-900/60 to-[#10131f]',
+  'from-emerald-900/80 via-teal-900/60 to-[#10131f]',
+  'from-rose-900/80 via-pink-900/60 to-[#10131f]',
+];
+
+const CARD_ACCENT_COLORS = [
+  'text-violet-400 border-violet-500/30 bg-violet-500/10',
+  'text-cyan-400 border-cyan-500/30 bg-cyan-500/10',
+  'text-emerald-400 border-emerald-500/30 bg-emerald-500/10',
+  'text-rose-400 border-rose-500/30 bg-rose-500/10',
+];
+
 const ProjectContent = ({ project }: { project: { title: string } }) => {
   const projectData = PROJECT_CONTENT.find(p => p.title === project.title);
-  
+  const idx = PROJECT_CONTENT.findIndex(p => p.title === project.title);
+  const accentColor = CARD_ACCENT_COLORS[idx % CARD_ACCENT_COLORS.length];
+
   if (!projectData) return null;
 
   return (
-    <div className="bg-card text-card-foreground max-w-4xl space-y-6 p-0">
-      {/* Header */}
-      <div className="space-y-4">
-        <div className="flex items-center gap-3">
-          <div className="bg-primary/10 text-primary rounded-lg p-2">
-            <Img className="h-6 w-6" />
-          </div>
-          <div>
-            <h3 className="text-xl font-semibold">{projectData.title}</h3>
-            <p className="text-muted-foreground text-sm">{projectData.date}</p>
-          </div>
-        </div>
-        
-        <p className="text-muted-foreground leading-relaxed">
-          {projectData.description}
-        </p>
-      </div>
+    <div className="max-w-4xl space-y-5 p-0">
+      {/* Description */}
+      <p className="text-slate-300 leading-relaxed text-sm">
+        {projectData.description}
+      </p>
 
-      {/* Status & Achievements */}
-      {(projectData.status || projectData.achievements || projectData.metrics) && (
-        <div className="space-y-3">
-          {projectData.status && (
-            <div className="flex items-center gap-2">
-              <span className="text-sm font-medium">Status:</span>
-              <span className={`text-sm px-2 py-1 rounded-full ${
-                projectData.status === 'Completed' ? 'bg-green-100 text-green-800' :
-                projectData.status === 'Ongoing' ? 'bg-blue-100 text-blue-800' :
-                'bg-gray-100 text-gray-800'
-              }`}>
-                {projectData.status}
-              </span>
-            </div>
-          )}
-          
-          {projectData.achievements && (
-            <div>
-              <h4 className="font-medium mb-1">Achievements</h4>
-              <ul className="text-sm text-muted-foreground list-disc list-inside">
-                {projectData.achievements.map((achievement, index) => (
-                  <li key={index}>{achievement}</li>
-                ))}
-              </ul>
-            </div>
-          )}
-          
-          {projectData.metrics && (
-            <div>
-              <h4 className="font-medium mb-1">Key Metrics</h4>
-              <div className="flex flex-wrap gap-2">
-                {projectData.metrics.map((metric, index) => (
-                  <span key={index} className="text-sm bg-blue-100 text-blue-800 px-2 py-1 rounded">
-                    {metric}
-                  </span>
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
-      )}
+      {/* Status & Date row */}
+      <div className="flex flex-wrap items-center gap-2">
+        <span className={`rounded-full border px-3 py-1 text-xs font-medium ${
+          projectData.status === 'Completed'
+            ? 'border-green-500/30 bg-green-500/10 text-green-400'
+            : 'border-blue-500/30 bg-blue-500/10 text-blue-400'
+        }`}>
+          {projectData.status}
+        </span>
+        <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-slate-400">
+          {projectData.date}
+        </span>
+        <span className={`rounded-full border px-3 py-1 text-xs font-medium ${accentColor}`}>
+          {projectData.category}
+        </span>
+      </div>
 
       {/* Tech Stack */}
       {projectData.techStack && projectData.techStack.length > 0 && (
-        <div className="space-y-3">
-          <h4 className="font-medium">Tech Stack</h4>
-          <div className="flex flex-wrap gap-2">
+        <div>
+          <h4 className="mb-2 text-xs font-semibold uppercase tracking-wider text-slate-500">Tech Stack</h4>
+          <div className="flex flex-wrap gap-1.5">
             {projectData.techStack.map((tech, index) => (
               <span
                 key={index}
-                className="bg-accent text-accent-foreground rounded-full px-3 py-1 text-sm"
+                className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-medium text-slate-300"
               >
                 {tech}
               </span>
@@ -94,55 +69,37 @@ const ProjectContent = ({ project }: { project: { title: string } }) => {
 
       {/* Links */}
       {projectData.links && projectData.links.length > 0 && (
-        <div className="space-y-3">
-          <h4 className="font-medium">Links</h4>
-          <div className="flex flex-wrap gap-3">
-            {projectData.links.map((link, index) => (
-              <a
-                key={index}
-                href={link.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-primary hover:text-primary/80 flex items-center gap-2 transition-colors"
-              >
-                <Link className="h-4 w-4" />
-                {link.name}
-                <ChevronRight className="h-4 w-4" />
-              </a>
-            ))}
-          </div>
+        <div className="flex flex-wrap gap-2 pt-1">
+          {projectData.links.map((link, index) => (
+            <a
+              key={index}
+              href={link.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-2 text-sm font-medium text-primary transition-all hover:bg-primary/20"
+            >
+              <Github className="h-4 w-4" />
+              {link.name}
+              <ExternalLink className="h-3 w-3 opacity-60" />
+            </a>
+          ))}
         </div>
       )}
 
-      {/* Images gallery */}
-      {projectData.images && projectData.images.length > 0 && (
-        <div className="space-y-6">
-          <div className="grid grid-cols-1 gap-4">
-            {projectData.images.map((image, index) => (
-              <div
-                key={index}
-                className="relative overflow-hidden rounded-2xl"
-              >
-                <Image
-                  src={image.src}
-                  alt={image.alt}
-                  width={800}
-                  height={600}
-                  className="w-full h-auto transition-transform"
-                />
-              </div>
-            ))}
-          </div>
-        </div>
+      {!projectData.links || projectData.links.length === 0 && (
+        <p className="text-xs text-slate-500 italic">Repository not yet public — work in progress.</p>
       )}
     </div>
   );
 };
 
-// Main data export - now dynamically generated from config
-export const data = projectData.map(project => ({
+// Build card data — use gradient thumbnails since projects have no images
+export const data = projectData.map((project, idx) => ({
   category: project.category,
   title: project.title,
-  src: project.src,
+  src: project.src !== '/placeholder.jpg' ? project.src : '',
+  gradient: CARD_GRADIENTS[idx % CARD_GRADIENTS.length],
+  accentColor: CARD_ACCENT_COLORS[idx % CARD_ACCENT_COLORS.length],
+  links: PROJECT_CONTENT.find(p => p.title === project.title)?.links || [],
   content: <ProjectContent project={{ title: project.title }} />,
 }));
