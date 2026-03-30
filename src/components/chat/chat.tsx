@@ -165,8 +165,8 @@ const Chat = () => {
         toast.error('Network error. Please check your connection and try again.');
         setErrorMessage('Network error. Please check your connection and try again.');
       } else {
-        toast.error(`Error: ${error.message}`);
-        setErrorMessage(`Error: ${error.message}`);
+        toast.error('Something went wrong. Please try again or use the preset questions.');
+        setErrorMessage('The AI assistant ran into an issue. Please try again in a moment, or use the preset buttons below for instant answers.');
       }
     },
     onToolCall: (tool) => {
@@ -400,7 +400,7 @@ const Chat = () => {
                         </div>
                         <div>
                           <h3 className="font-semibold text-white text-md">
-                            Limit Reached
+                            {errorMessage.includes('demo limit') || errorMessage.includes('reached') ? 'Limit Reached' : 'Something went wrong'}
                           </h3>
                         </div>
                       </div>
